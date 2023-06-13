@@ -62,6 +62,7 @@ func (a *Application) Stop(ctx context.Context) {
 	if err != nil {
 		a.log.Error(err)
 	}
+	a.CloseProducer()
 	a.log.Info("shutting down....")
 	return
 }

@@ -10,7 +10,7 @@ import (
 
 type Producer struct {
 	log           log.Logger
-	producers     []*kafka.Producer
+	Producers     []*kafka.Producer
 	producerIndex int
 }
 
@@ -43,10 +43,10 @@ func NewProducer(log log.Logger, bootstrapServer string) (*Producer, error) {
 	}
 
 	producers := []*kafka.Producer{prod1, prod2, prod3}
-	
+
 	return &Producer{
 		log:           log,
-		producers:     producers,
+		Producers:     producers,
 		producerIndex: 0,
 	}, nil
 }
@@ -70,7 +70,7 @@ func (prod Producer) ProduceWithRetry(topic string, value []byte) error {
 
 func (prod Producer) produce(topic string, value []byte) error {
 	deliveryCh := make(chan kafka.Event)
-	err := prod.producers[prod.producerIndex].Produce(&kafka.Message{
+	err := prod.Producers[prod.producerIndex].Produce(&kafka.Message{
 		TopicPartition: kafka.TopicPartition{Topic: &topic, Partition: kafka.PartitionAny},
 		Value:          value},
 		deliveryCh,
@@ -92,7 +92,7 @@ func (prod Producer) produce(topic string, value []byte) error {
 
 	close(deliveryCh)
 	prod.producerIndex++
-	if prod.producerIndex == len(prod.producers) {
+	if prod.producerIndex == len(prod.Producers) {
 		prod.producerIndex = 0
 	}
 
