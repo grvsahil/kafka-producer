@@ -1,5 +1,5 @@
 package producer
 
 type Produce interface {
-	ProduceWithRetry(bootstrapServer string, topic string, value []byte) error
+	ProduceWithRetry(topic string, value []byte) error
 }

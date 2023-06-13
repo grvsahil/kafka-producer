@@ -13,8 +13,7 @@ import (
 )
 
 const (
-	topic           = "payment"
-	bootstrapServer = "localhost:9092"
+	topic = "payment"
 )
 
 func RegisterHandlers(router *gin.Engine, producer producer.Produce, logger log.Logger) {
@@ -40,7 +39,7 @@ func (res resource) Entry(c *gin.Context) {
 		return
 	}
 
-	err = res.producer.ProduceWithRetry(bootstrapServer, topic, paymentBytes)
+	err = res.producer.ProduceWithRetry(topic, paymentBytes)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
